@@ -3,7 +3,7 @@ pragma solidity >=0.8.29;
 
 import {DiamondCutFacet} from "Compose/src/diamond/DiamondCutFacet.sol";
 import {DiamondLoupeFacet} from "Compose/src/diamond/DiamondLoupeFacet.sol";
-// import {LibDiamond} from "Compose/src/diamond/LibDiamond.sol";
+import {LibDiamond} from "Compose/src/diamond/LibDiamond.sol";
 
 interface IDiamond{
     function cut() external view returns(address);
@@ -114,6 +114,8 @@ library LibBaseDiamond{
 }
 
 abstract contract BaseDiamond is IDiamond{
+    error FunctionNotFound(bytes4 _selector);
+
     bytes32 constant BASE_DIAMOND_STORAGE_POSITION = keccak256("compose-extension.diamond.base");
 
     struct BaseDiamondStorage{
@@ -205,6 +207,24 @@ abstract contract BaseDiamond is IDiamond{
             $.loupe = _diamond_loupe_facet;
         }
     }
+
+    fallback() external payable {
+        LibDiamond.DiamondStorage storage s = LibDiamond.getStorage();
+        address facet = s.facetAndPosition[msg.sig].facet;
+        if (facet == address(0)) revert FunctionNotFound(msg.sig);
+
+        assembly {
+            calldatacopy(0, 0, calldatasize())
+            let result := delegatecall(gas(), facet, 0, calldatasize(), 0, 0)
+            let size := returndatasize()
+            returndatacopy(0, 0, size)
+            switch result
+            case 0 { revert(0, size) }
+            default { return(0, size) }
+        }
+    }
+
+    receive() external payable {}
 
 
 
