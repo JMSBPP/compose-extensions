@@ -1,3 +1,0 @@
-forge-std/=lib/forge-std/src/
-solidity-lib/=lib/solidity-lib/contracts/
-Compose/=lib/Compose/

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.29;
+pragma solidity 0.8.30;
 
 import {DiamondCutFacet} from "Compose/src/diamond/DiamondCutFacet.sol";
 import {DiamondLoupeFacet} from "Compose/src/diamond/DiamondLoupeFacet.sol";
