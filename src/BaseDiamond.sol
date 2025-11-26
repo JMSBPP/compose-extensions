@@ -12,8 +12,8 @@ import {Address} from "./libraries/Address.sol";
 
 interface IDiamond{
     error DiamondFunctionNotFound(bytes4 _selector);
-    // function call_diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external;
-    // function diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external;
+    function call_diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external;
+    function diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external;
 }
 
 
