@@ -19,6 +19,8 @@ interface IDiamond{
 
 abstract contract BaseDiamond is IDiamond{
 
+
+
     function call_diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external{
         Address.functionCall(address(this), abi.encodeCall(IDiamond.diamondCut, (_diamondCut, _init, _calldata)));
     }

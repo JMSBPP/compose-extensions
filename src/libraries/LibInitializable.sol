@@ -78,7 +78,7 @@ library LibInitializable {
      * @dev Returns a pointer to the storage namespace.
      */
     // solhint-disable-next-line var-name-mixedcase
-    function getStorage() private pure returns (InitializableStorage storage $) {
+    function getStorage() internal pure returns (InitializableStorage storage $) {
         bytes32 slot = INITIALIZABLE_STORAGE;
         assembly {
             $.slot := slot
