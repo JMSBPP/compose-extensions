@@ -1,4 +1,7 @@
 {
+  "lib/Compose": {
+    "rev": "6e73f49fa3b0a77ef192e25bb787952ce639c819"
+  },
   "lib/forge-std": {
     "tag": {
       "name": "v1.11.0",
