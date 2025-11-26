@@ -40,9 +40,5 @@ abstract contract GenericFactoryFacet is IGenericFactory{
         }
     }
 
-    
-
-
-
 }
 

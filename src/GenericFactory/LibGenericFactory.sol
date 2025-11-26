@@ -140,6 +140,11 @@ library LibGenericFactory{
         emit GenericFactorySetUpgradeAdmin(newUpgradeAdmin);
     }
 
+    function implementation() internal view returns(address){
+        GenericFactoryStorage storage $ = getStorage();
+        return $.implementation;
+    }
+
     // TODO: Missing more functions
 
 
