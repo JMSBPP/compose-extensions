@@ -2,6 +2,9 @@
   "lib/Compose": {
     "rev": "6e73f49fa3b0a77ef192e25bb787952ce639c819"
   },
+  "lib/euler-vault-kit": {
+    "rev": "5b98b42048ba11ae82fb62dfec06d1010c8e41e6"
+  },
   "lib/forge-std": {
     "tag": {
       "name": "v1.11.0",

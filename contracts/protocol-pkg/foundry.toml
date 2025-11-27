@@ -1,0 +1,26 @@
+[profile.default]
+src = "src"
+out = "out"
+test = "test"
+script = "script"
+libs = ["lib"]
+auto_detect_remappings = false
+solc_version = '0.8.30'
+evm_version = "prague"
+bytecode_hash = "none"
+
+skip = [
+    "lib/compose-extensions/lib/**"
+]
+
+remappings = [
+    "forge-std/=lib/forge-std/src/",
+    "Compose/=lib/Compose/src/",
+    "compose-extensions/=lib/compose-extensions/src/"
+]
+
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+
+[rpc_endpoints]
+sepolia = "https://eth-sepolia.g.alchemy.com/v2/${SEPOLIA_API_KEY}"

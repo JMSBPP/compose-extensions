@@ -10,3 +10,15 @@
 [submodule "lib/euler-vault-kit"]
 	path = lib/euler-vault-kit
 	url = https://github.com/euler-xyz/euler-vault-kit
+[submodule "lib/compose-extensions"]
+	path = lib/compose-extensions
+	url = https://github.com/JMSBPP/compose-extensions
+[submodule "contracts/protocol-pkg/lib/forge-std"]
+	path = contracts/protocol-pkg/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "contracts/protocol-pkg/lib/Compose"]
+	path = contracts/protocol-pkg/lib/Compose
+	url = https://github.com/JMSBPP/Compose
+[submodule "contracts/protocol-pkg/lib/compose-extensions"]
+	path = contracts/protocol-pkg/lib/compose-extensions
+	url = https://github.com/JMSBPP/compose-extensions
