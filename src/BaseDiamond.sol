@@ -12,8 +12,8 @@ import {Address} from "./libraries/Address.sol";
 
 interface IDiamond{
     error DiamondFunctionNotFound(bytes4 _selector);
-    function call_diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external;
     function diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external;
+    function _diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external;
 }
 
 
@@ -21,11 +21,12 @@ abstract contract BaseDiamond is IDiamond{
 
 
 
-    function call_diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external{
+
+    function diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external{
         Address.functionCall(address(this), abi.encodeCall(IDiamond.diamondCut, (_diamondCut, _init, _calldata)));
     }
     
-    function diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external{
+    function _diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external{
         LibDiamond.diamondCut(_diamondCut,_init, _calldata);
     }    
 
