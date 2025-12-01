@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity >=0.8.30;
 
+
 interface IGenericFactory{
     struct ProxyConfig {
         // If true, proxy is an instance of the BeaconProxy

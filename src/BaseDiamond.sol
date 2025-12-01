@@ -14,6 +14,12 @@ interface IDiamond{
     error DiamondFunctionNotFound(bytes4 _selector);
     function diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external;
     function _diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external;
+    function addFunctions(address _facet, bytes4[] calldata _functionSelectors) external;
+    function _addFunctions(address _facet, bytes4[] calldata _functionSelectors) external;
+    function removeFunctions(address _facet, bytes4[] calldata _functionSelectors) external;
+    function _removeFunctions(address _facet, bytes4[] calldata _functionSelectors) external;
+    function replaceFunctions(address _facet, bytes4[] calldata _functionSelectors) external;
+    function _replaceFunctions(address _facet, bytes4[] calldata _functionSelectors) external;
 }
 
 
@@ -21,14 +27,38 @@ abstract contract BaseDiamond is IDiamond{
 
 
 
-
+    
     function diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external{
         Address.functionCall(address(this), abi.encodeCall(IDiamond.diamondCut, (_diamondCut, _init, _calldata)));
     }
     
     function _diamondCut(LibDiamond.FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external{
         LibDiamond.diamondCut(_diamondCut,_init, _calldata);
-    }    
+    }
+
+    function addFunctions(address _facet, bytes4[] calldata _functionSelectors) external{
+        Address.functionCall(address(this), abi.encodeCall(IDiamond._addFunctions, (_facet, _functionSelectors)));
+    }
+
+    function _addFunctions(address _facet, bytes4[] calldata _functionSelectors) external{
+        LibDiamond.addFunctions(_facet, _functionSelectors);
+    }
+
+    function removeFunctions(address _facet, bytes4[] calldata _functionSelectors) external{
+        Address.functionCall(address(this), abi.encodeCall(IDiamond._removeFunctions, (_facet, _functionSelectors)));
+    }
+
+    function _removeFunctions(address _facet, bytes4[] calldata _functionSelectors) external{
+        LibDiamond.removeFunctions(_facet, _functionSelectors);
+    }
+
+    function replaceFunctions(address _facet, bytes4[] calldata _functionSelectors) external{
+        Address.functionCall(address(this), abi.encodeCall(IDiamond._replaceFunctions, (_facet, _functionSelectors)));
+    }
+
+    function _replaceFunctions(address _facet, bytes4[] calldata _functionSelectors) external{
+        LibDiamond.replaceFunctions(_facet, _functionSelectors);
+    }
 
     fallback() external payable {
         LibDiamond.DiamondStorage storage s = LibDiamond.getStorage();
