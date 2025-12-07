@@ -3,7 +3,7 @@ pragma solidity >=0.8.30;
 
 import "./InitializableMod.sol" as InitializableMod;
 
-library LibInitializable{
+abstract contract Initializable {
     error Uninitialized();
     error InvalidInitialization();
     error InitializableNotInitializing();
@@ -67,7 +67,4 @@ library LibInitializable{
     
         _;
     }
-
-
-
 }
