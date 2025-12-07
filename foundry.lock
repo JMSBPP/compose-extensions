@@ -1,6 +1,18 @@
 {
+  "contracts/protocol-pkg/lib/Compose": {
+    "rev": "60c77b2a59326d1f1b6afa21da699148ad8391aa"
+  },
+  "contracts/protocol-pkg/lib/compose-extensions": {
+    "rev": "ff45918690fc4eb28ae4762e8dd2471b043989d6"
+  },
+  "contracts/protocol-pkg/lib/forge-std": {
+    "rev": "7117c90c8cf6c68e5acce4f09a6b24715cea4de6"
+  },
   "lib/Compose": {
     "rev": "6e73f49fa3b0a77ef192e25bb787952ce639c819"
+  },
+  "lib/compose-extensions": {
+    "rev": "5a6907179ec47e4301137199c0b0b4ca8049a83a"
   },
   "lib/euler-vault-kit": {
     "rev": "5b98b42048ba11ae82fb62dfec06d1010c8e41e6"
