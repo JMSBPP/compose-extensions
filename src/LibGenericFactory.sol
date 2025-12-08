@@ -15,12 +15,76 @@ interface IComponent {
 }
 
 library LibGenericFactory{
+    
+    bytes32 constant STORAGE_POSITION = keccak256("compose-extension.generic-factory");
+    
+
+    struct ProxyConfig {
+        // If true, proxy is an instance of the BeaconProxy
+        bool upgradeable;
+        // Address of the implementation contract
+        // May be an out-of-date value, if upgradeable (handled by getProxyConfig)
+        address implementation;
+        // The metadata attached to every call passing through the proxy
+        bytes trailingData;
+    }
+
+    struct GenericFactoryStorage{
+        address upgradeAdmin;
+        address implementation;
+        mapping(address proxy => ProxyConfig) proxyLookup;
+        address[] proxyList;
+    }
+    
+    function getStorage() internal pure returns (GenericFactoryStorage storage s) {
+        bytes32 position = STORAGE_POSITION;
+        assembly {
+            s.slot := position
+        }
+    }
+    
+    function upgradeAdmin() internal returns(address){
+       GenericFactoryStorage storage $ = getStorage();
+        return $.upgradeAdmin;
+    }
+    function implementation() internal returns(address){
+        GenericFactoryStorage storage $ = getStorage();
+        return $.implementation;
+    }
+
+    function proxyLookup(address proxy) internal returns(ProxyConfig memory){
+        GenericFactoryStorage storage $ = getStorage();
+        return $.proxyLookup[proxy];
+    }
+
+    function proxyList() internal returns(address[] memory){
+        GenericFactoryStorage storage $ = getStorage();
+        return $.proxyList; 
+    }
+
+
+    event Genesis();
+
     event ProxyCreated(address indexed proxy, bool upgradeable, address implementation, bytes trailingData);
+
+    event SetImplementation(address indexed newImplementation);
+
+    event SetUpgradeAdmin(address indexed newUpgradeAdmin);
+
+
+    error E_Reentrancy();
+    error E_Unauthorized();
+    error E_Implementation();
+    error E_BadAddress();
+    error E_BadQuery();
+
+    
     modifier nonReentrant() {
         NonReentrancyMod.enter();
         _;
         NonReentrancyMod.exit();
     }
+
 
     modifier adminOnly() {
         _adminOnly();
@@ -35,17 +99,17 @@ library LibGenericFactory{
 
 
     function createProxy(address desiredImplementation, bool upgradeable, bytes memory trailingData)
-        external
+        internal 
         nonReentrant
         returns (address)
         {
-            GenericFactoryMod.GenericFactoryStorage storage $ = GenericFactoryMod.getStorage();
+            GenericFactoryStorage storage $ = getStorage();
         
             address _implementation = $.implementation;
             if (desiredImplementation == address(0)) desiredImplementation = _implementation;
         
 
-            if (desiredImplementation == address(0) || desiredImplementation != _implementation) revert GenericFactoryMod.E_Implementation();
+            if (desiredImplementation == address(0) || desiredImplementation != _implementation) revert E_Implementation();
         
             // The provided trailing data is prefixed with 4 zero bytes to avoid potential selector clashing in case the
             // proxy is called with empty calldata.
@@ -59,7 +123,7 @@ library LibGenericFactory{
             }
 
             $.proxyLookup[proxy] =
-                GenericFactoryMod.ProxyConfig({upgradeable: upgradeable, implementation: desiredImplementation, trailingData: trailingData});
+                ProxyConfig({upgradeable: upgradeable, implementation: desiredImplementation, trailingData: trailingData});
     
             $.proxyList.push(proxy);
         
@@ -72,16 +136,16 @@ library LibGenericFactory{
         }
 
     function setImplementation(address newImplementation) internal nonReentrant adminOnly {
-        GenericFactoryMod.GenericFactoryStorage storage $ = GenericFactoryMod.getStorage();
-        if (newImplementation.code.length == 0) revert GenericFactoryMod.E_BadAddress();
+        GenericFactoryStorage storage $ = getStorage();
+        if (newImplementation.code.length == 0) revert E_BadAddress();
             $.implementation = newImplementation;
-            emit GenericFactoryMod.SetImplementation(newImplementation);
+            emit SetImplementation(newImplementation);
     }
 
     function setUpgradeAdmin(address newUpgradeAdmin) internal nonReentrant adminOnly {
-        GenericFactoryMod.GenericFactoryStorage storage $ = GenericFactoryMod.getStorage();
+        GenericFactoryStorage storage $ = getStorage();
         $.upgradeAdmin = newUpgradeAdmin;
-        emit GenericFactoryMod.SetUpgradeAdmin(newUpgradeAdmin);
+        emit SetUpgradeAdmin(newUpgradeAdmin);
     }
 
 }
