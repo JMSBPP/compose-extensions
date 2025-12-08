@@ -92,8 +92,8 @@ library LibGenericFactory{
     }
 
     function _adminOnly() internal{
-        GenericFactoryMod.GenericFactoryStorage storage $ = GenericFactoryMod.getStorage();
-        if (msg.sender != $.upgradeAdmin) revert GenericFactoryMod.E_Unauthorized();
+        GenericFactoryStorage storage $ = getStorage();
+        if (msg.sender != $.upgradeAdmin) revert E_Unauthorized();
         
     }  
 
